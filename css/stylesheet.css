@@ -1,0 +1,217 @@
+/* Cascading Style Sheet Created By: PxO Ink (http://pxoink.net/) */
+/* Cascading Style Sheet Copyright © 2014 PxO Ink. All Rights Reserved. */
+
+/* Begin Page Settings */
+
+*.nod {
+	display: none;
+	}
+	
+*.req {
+	color: #F00;
+	}
+
+a {
+	color: #000;
+	text-decoration: underline;
+	}
+
+a:hover {
+	color: #069;
+	text-decoration: underline;
+	}
+	
+h1 {
+	font-size: 4.00em;
+	}
+	
+h2 {
+	font-size: 2.80em;
+	}
+	
+h3, fieldset legend {
+	font-size: 2.40em;
+	}
+	
+h4 {
+	font-size: 1.80em;
+	}
+	
+h5 {
+	font-size: 1.60em;
+	}
+	
+h6 {
+	font-size: 1.40em;
+	}
+	
+input[type=text], input[type=password], input[type=email], input[type=date], input[type=datetime], input[type=datetime-local], input[type=search], input[type=tel], input[type=url], input[type=month], input[type=week], input[type=number], input[type=range], input[type=color], select, textarea {
+	padding: 0.25em;
+	}
+	
+input[type=file] {
+	padding: 0.25em;
+	}
+	
+input[type=image] {
+	vertical-align: top;
+	}
+	
+input[readonly] {
+	background-color: buttonface;
+	}
+	
+input.datepicker {
+	cursor: pointer;
+	}
+	
+button, input[type=submit], input[type=reset], .button {
+	cursor: pointer;
+	}
+	
+button:hover, input[type=submit]:hover, input[type=reset]:hover, .button:hover {
+	color: #000;
+	}
+	
+fieldset {
+	border-width: 0px;
+	}
+	
+form > label[for] {
+	cursor: pointer;
+	}
+
+table {
+	width: 100.00%;
+	}
+	
+table caption, table th, table thead td, table tbody th, table tbody td {
+	text-align: left;
+	}
+	
+table thead td input, table tbody td input, table thead td select, table tbody td select, table thead td textarea, table tbody td textarea {
+	
+	}
+
+/* End Page Settings */
+
+/* Begin Page Work */
+
+.alert {
+	margin: 0.50em 0px;
+	background-color: #EEE;
+	border-width: 1px;
+	border-color: #DDD;
+	border-style: solid;
+	border-radius: 2px;
+	}
+
+.alert.error {
+	background-color: #FDD;
+	border-color: #F66;
+	}
+	
+.alert.success {
+	background-color: #DFE;
+	border-color: #7E7;
+	}
+
+.alert.warning {
+	background-color: #FFC;
+	border-color: #FC9;
+	}
+
+section#container > aside > nav > ul > li > a, 
+section#main > footer p, section#main form > label,
+section#main > article > header p, section#main > article > footer p, 
+section#main > section > header p, section#main > section > footer p,
+section#main #content p, section#main #content > ul > li, p.copyright {
+	font-size: 1.40em;
+	line-height: 1.50em;
+	}
+	
+.column {
+	float: left;
+	margin: 1.25% 0px;
+	}
+	
+.column.one {
+	width: 009.98%;
+	}
+
+.column.two {
+	width: 019.96%;
+	}
+	
+.column.three {
+	width: 029.94%;
+	}
+	
+.column.four {
+	width: 039.92%;
+	}
+	
+.column.five {
+	width: 049.90%;
+	}
+	
+.column.six {
+	width: 059.88%;
+	}
+	
+.column.seven {
+	width: 069.86%;
+	}
+	
+.column.eight {
+	width: 079.84%;
+	}
+	
+.column.nine {
+	width: 89.82%
+	}
+	
+.column.ten {
+	width: 100.00%;
+	}
+	
+section#container {
+	margin: 2.50% auto;
+	width: 80.00%;
+	}
+	
+section#container > nav {
+	margin: 1.25% auto;
+	padding: 1.25%;
+	width: 97.50%;
+	background-color: #EEE;
+	}
+	
+section#container > nav > ul > li {
+	display: inline;
+	list-style-type: none;
+	margin-right: 2.50%;
+	}
+	
+section#container > nav > ul > li > a {
+	font-size: 1.80em;
+	letter-spacing: 1px;
+	text-decoration: none;
+	}
+	
+section#main #content > ul > li {
+	list-style-position: inside;
+	}
+	
+section#container > aside > nav > ul > li {
+	list-style-type: none;
+	margin-bottom: 0.50%;
+	}
+	
+section#container > footer {
+	clear: both;
+	margin: 1.25% 0px;
+	text-align: center;
+	}
+
+/* End Page Work */

@@ -1,0 +1,13 @@
+/* Cascading Style Sheet Created By: PxO Ink (http://pxoink.net/) */
+/* Cascading Style Sheet Copyright © 2014 PxO Ink. All Rights Reserved. */
+
+#login h1 a {
+	background-image: url('../images/logo.png');
+	background-size: 320px auto;
+	background-repeat: no-repeat;
+	background-position: center;
+	}
+	
+#backtoblog {
+	display: none;
+	}
