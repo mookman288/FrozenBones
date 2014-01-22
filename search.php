@@ -1,5 +1,5 @@
 <?php get_header(); ?>
-			<section id="main" class="column eight">		
+			<section id="main" class="column left eight">		
 				<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 					<header>
 						<?php _frozen_breadcrumbs(); ?>
@@ -40,4 +40,5 @@
 					</section>
 				<?php endif; ?>
 			</section>
+			<?php get_sidebar(); ?>
 <?php get_footer(); ?>

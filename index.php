@@ -1,5 +1,5 @@
 <?php get_header(); ?>
-			<section id="main" class="column eight">
+			<section id="main" class="column left eight">
 				<header>
 					<?php _frozen_breadcrumbs(); ?>
 				</header>
