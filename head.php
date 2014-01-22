@@ -2,8 +2,8 @@
 <html <?php language_attributes(); ?> class="no-js">
 	<head>
 		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
 		<meta name="author" content="PxO Ink" /> <!-- Author: website void if removed. -->
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="HandheldFriendly" content="True">
 		<meta name="MobileOptimized" content="320">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>

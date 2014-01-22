@@ -583,6 +583,7 @@ function	_frozen_queue() {
 		wp_register_style('frozen-reset', "$styleDir/reset.css", array(), '', 'all');
 		wp_register_style('frozen-clear', "$styleDir/clear.css", array(), '', 'all');
 		wp_register_style('frozen-stylesheet', "$styleDir/stylesheet.css", array(), '', 'all');
+		wp_register_style('frozen-responsive', "$styleDir/responsive.css", array(), '', 'all');
 		wp_register_style('frozen-icebox', "$styleDir/icebox.css", array(), '', 'all');
 
 		//Register scripts.
@@ -598,6 +599,7 @@ function	_frozen_queue() {
 		wp_enqueue_style('frozen-reset');
 		wp_enqueue_style('frozen-clear');
 		wp_enqueue_style('frozen-stylesheet');
+		wp_enqueue_style('frozen-responsive');
 		wp_enqueue_style('frozen-icebox');
 		
 		//Queue jQuery.
