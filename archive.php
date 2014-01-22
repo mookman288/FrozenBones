@@ -1,4 +1,4 @@
-			<section id="main" class="column eight">
+			<section id="main" class="column left eight">
 				<header>
 					<?php if (is_category()) { ?>
 						<h1 class="category-title"><?php _e('Categorized By', 'bonestheme'); ?> <?php single_cat_title(); ?></h1>

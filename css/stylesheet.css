@@ -131,8 +131,15 @@ section#main #content p, section#main #content > ul > li, p.copyright {
 	}
 	
 .column {
-	float: left;
 	margin: 1.25% 0px;
+	}
+	
+.column.left {
+	float: left;
+	}
+	
+.column.right {
+	float: right;
 	}
 	
 .column.one {
@@ -168,44 +175,11 @@ section#main #content p, section#main #content > ul > li, p.copyright {
 	}
 	
 .column.nine {
-	width: 89.82%
+	width: 089.82%
 	}
 	
 .column.ten {
 	width: 100.00%;
-	}
-	
-section#container {
-	margin: 2.50% auto;
-	width: 80.00%;
-	}
-	
-section#container > nav {
-	margin: 1.25% auto;
-	padding: 1.25%;
-	width: 97.50%;
-	background-color: #EEE;
-	}
-	
-section#container > nav > ul > li {
-	display: inline;
-	list-style-type: none;
-	margin-right: 2.50%;
-	}
-	
-section#container > nav > ul > li > a {
-	font-size: 1.80em;
-	letter-spacing: 1px;
-	text-decoration: none;
-	}
-	
-section#main #content > ul > li {
-	list-style-position: inside;
-	}
-	
-section#container > aside > nav > ul > li {
-	list-style-type: none;
-	margin-bottom: 0.50%;
 	}
 	
 section#container > footer {
