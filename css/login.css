@@ -4,9 +4,10 @@
 #login h1 a {
 	width: 100.00%;
 	background-image: url('../images/logo.png');
-	background-size: 320px auto;
+	background-size: 100% auto;
 	background-repeat: no-repeat;
 	background-position: center;
+	width: 100%;
 	}
 	
 #backtoblog {
