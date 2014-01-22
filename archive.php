@@ -1,4 +1,3 @@
-<?php get_header(); ?>
 			<section id="main" class="column eight">
 				<header>
 					<?php if (is_category()) { ?>
@@ -47,7 +46,7 @@
 							<article id="post-<?php the_ID(); ?>" role="article">
 								<header>
 									<h2><a href="<?php the_permalink() ?>" rel="bookmark" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></h2>
-									<p class="card"><?php printf(_('Posted <time class="updated" datetime="%1$s" pubdate>%2$s</time> by <span class="author">%3$s</span>.', 'bonestheme' ), get_the_time('Y-m-j'), get_the_time(get_option('date_format')), bones_get_the_author_posts_link()); ?></p>
+									<p class="card"><?php printf(_('Posted <time class="updated" datetime="%1$s" pubdate>%2$s</time> by <span class="author">%3$s</span>.'), get_the_time('Y-m-j'), get_the_time(get_option('date_format')), _frozen_get_the_author_posts_link()); ?></p>
 								</header>
 								<section>
 									<?php the_post_thumbnail('frozen-thumb-280'); ?>
