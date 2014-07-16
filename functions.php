@@ -409,7 +409,7 @@ function _frozen_header_style_admin() {
 }
 
 //Add custom image header support. 
-add_custom_image_header('_frozen_header_style', '_frozen_header_style_admin');
+add_theme_support('_frozen_header_style', '_frozen_header_style_admin');
 
 /**
  * Queue login CSS. 
