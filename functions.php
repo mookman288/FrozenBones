@@ -70,6 +70,7 @@ add_filter('admin_footer_text', '_frozen_admin_footer');
  * Custom breadcrumbs based on Cazue breadcrumbs.
  */
 function	_frozen_breadcrumbs() {
+	global $post;
 	?>
 		<div id="breadcrumbs">
 			<?php
@@ -866,6 +867,12 @@ function	mainNavigation() {
 			'depth' => 1,
 			'fallback_cb' => '_frozen_navigation'
 			));
+}
+
+function filed_under() {
+	$category = get_the_category_list(', ');
+	$filed = ($category!="" ? __('Filed under')." ".$category."." : "");
+	echo $filed;
 }
 
 ?>
