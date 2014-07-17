@@ -182,7 +182,7 @@ function	_frozen_breadcrumbs() {
 					<?php 
 				}
 			?>
-		</ul>
+		</div>
 	<?php 
 }
 
