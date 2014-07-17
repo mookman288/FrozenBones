@@ -70,6 +70,7 @@ add_filter('admin_footer_text', '_frozen_admin_footer');
  * Custom breadcrumbs based on Cazue breadcrumbs.
  */
 function	_frozen_breadcrumbs() {
+	global $post;
 	?>
 		<div id="breadcrumbs">
 			<?php
@@ -408,7 +409,7 @@ function _frozen_header_style_admin() {
 }
 
 //Add custom image header support. 
-add_custom_image_header('_frozen_header_style', '_frozen_header_style_admin');
+add_theme_support('custom-header', array('wp-head-callback' => '_frozen_header_style', 'admin-head-callback' => '_frozen_header_style_admin'));
 
 /**
  * Queue login CSS. 
@@ -866,6 +867,12 @@ function	mainNavigation() {
 			'depth' => 1,
 			'fallback_cb' => '_frozen_navigation'
 			));
+}
+
+function filed_under() {
+	$category = get_the_category_list(', ');
+	$filed = ($category!="" ? __('Filed under')." ".$category."." : "");
+	echo $filed;
 }
 
 ?>

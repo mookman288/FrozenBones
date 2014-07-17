@@ -13,7 +13,7 @@
 						</section>
 						<footer>
 							<section>
-								<p class="cats"><?php printf(_('Filed under %s.'), get_the_category_list(', ')); ?></p>
+								<p class="cats"><?php filed_under(); ?></p>
 								<p class="tags"><?php the_tags('<span class="tags-title">' . __( 'Tags:', 'bonestheme' ) . '</span> ', ', ', ''); ?></p>
 							</section>
 							<aside>

@@ -11,8 +11,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;_n\n"
-"X-Generator: Poedit 1.5.5\n"
+"X-Generator: Poedit 1.6.6\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Language: fr_FR\n"
 
 #: 404.php:13
 msgid "Epic 404 - Article Not Found"
@@ -521,6 +522,9 @@ msgstr "http://www.votresite.com"
 msgid "Custom Page Example"
 msgstr "Exemple de page personnalisée"
 
+msgid "Filed under"
+msgstr "Dans la catégorie"
+
 #~ msgid "Response"
 #~ msgstr "Réponse"
 
@@ -556,9 +560,6 @@ msgstr "Exemple de page personnalisée"
 
 #~ msgid "by"
 #~ msgstr "par"
-
-#~ msgid "filed under"
-#~ msgstr "dans la catégorie"
 
 #~ msgid "Read more on"
 #~ msgstr "En lire plus sur"
