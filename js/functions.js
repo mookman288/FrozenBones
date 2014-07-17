@@ -10,8 +10,3 @@
 jQuery(document).ready(function() {
 	console.log('ready!');
 });
-
-//When the window has loaded.
-jQuery(window).load(function() {
-	console.log('load!');
-});

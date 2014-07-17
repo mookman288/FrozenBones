@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html <?php language_attributes(); ?> class="no-js">
+<html <?php language_attributes(); ?> class="no-js" data-template="<?php bloginfo('template_directory'); ?>">
 	<head>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
@@ -13,9 +13,5 @@
 		<link rel="shortcut icon" href="<?php bloginfo('template_directory'); ?>/favicon.ico">
 		<link rel="apple-touch-icon" href="<?php bloginfo('template_directory'); ?>/images/apple-icon-touch.png">
 		<link rel="pingback" href="<?php bloginfo('pingback_url'); ?>">
-		<script type="text/javascript">
-			//Set the template directory.
-			var	dir	=	'<?php bloginfo('template_directory'); ?>';
-		</script>
 		<?php wp_head(); ?>
 	</head>

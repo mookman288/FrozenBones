@@ -29,3 +29,6 @@ dwsync.xml
 intermediate
 publish
 .idea
+composer.phar
+composer.lock
+vendor/

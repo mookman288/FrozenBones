@@ -3,6 +3,10 @@
 
 /* Begin Page Settings */
 
+*.clear {
+	clear: both;
+	}
+
 *.nod {
 	display: none;
 	}
@@ -184,8 +188,6 @@ section#main #content p, section#main #content > ul > li, p.copyright {
 	
 section#container > footer {
 	clear: both;
-	margin: 1.25% 0px;
-	text-align: center;
 	}
 
 /* End Page Work */

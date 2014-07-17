@@ -53,6 +53,20 @@ function	_frozen() {
 	
 	//Register the search form.
 	add_filter('get_search_form', '_frozen_search_form');
+	
+	//If within the admin.
+	if (is_admin()) {
+		//Register the administrative options. 
+		add_action('admin_menu', '_frozen_admin_options');
+		add_action('admin_init', '_frozen_admin_register_options');
+	}
+}
+
+/**
+ * Administrative settings custom fields. 
+ */
+function	_frozen_admin_fields() {
+	
 }
 
 /**
@@ -65,6 +79,63 @@ function	_frozen_admin_footer() {
 
 //Set the custom filter.
 add_filter('admin_footer_text', '_frozen_admin_footer');
+
+/**
+ * Administrative option registers. 
+ */
+function	_frozen_admin_options() {
+	//Create a new administrative menu page.
+	//add_menu_page('Frozen Plugin Settings', 'Frozen Settings', 'administrator', __FILE__, '_frozen_admin_options_page', plugins_url('/images/favicon.png', __FILE__));
+}
+
+/**
+ * Administrative option page.
+ */
+function	_frozen_admin_options_page() {
+	//Declare variables.
+	$options			=	array();
+	$options['option']	=	get_option('option_name');
+
+	?>
+		<div class="wrap">
+			<?php screen_icon(); ?>
+			<h2>Frozen Bones Settings</h2>
+			<form method="post" action="<?php print($_SERVER['REQUEST_URI']); ?>">
+				<?php 
+					//Add the option group.
+					settings_fields('option_group');
+					
+					//Add the setting section.
+					do_settings_sections('setting_admin');
+					
+					//Submit button.
+					submit_button();
+				?>
+			</form>
+		</div>
+	<?php 
+}
+
+/**
+ * Registers administrative options. 
+ */
+function	_frozen_admin_register_options() {
+	//Register settings. 
+	register_setting('option_group', 'option_name', 'intval');
+	
+	//Add settings sections.
+	add_settings_section('setting_admin', 'Title', '_frozen_admin_section', 'setting_admin');
+	
+	//Add settings fields.
+	add_settings_field('setting_field', 'Title', '_frozen_admin_fields', 'setting_admin', 'setting_admin');
+}
+
+/**
+ * Administrative settings sections. 
+ */
+function	_frozen_admin_section() {
+	
+}
 
 /**
  * Custom breadcrumbs based on Cazue breadcrumbs.
@@ -408,7 +479,7 @@ function _frozen_header_style_admin() {
 }
 
 //Add custom image header support. 
-add_custom_image_header('_frozen_header_style', '_frozen_header_style_admin');
+add_theme_support('custom_header', array('wp-head-callback' => '_frozen_header_style', 'admin-head-callback' => '_frozen_header_style_admin'));
 
 /**
  * Queue login CSS. 
@@ -821,7 +892,7 @@ function	headerNavigation() {
 			'link_before' => '',
 			'link_after' => '',
 			'items_wrap' => '<menu id="%1$s" class="%2$s">%3$s</menu>',
-			'depth' => 0,
+			'depth' => 1,
 			'fallback_cb' => '_frozen_wasteland'
 			));
 }
@@ -842,7 +913,7 @@ function	footerNavigation() {
 			'link_before' => '',
 			'link_after' => '',
 			'items_wrap' => '<nav id="%1$s"><ul id="%2$s">%3$s</ul></nav>',
-			'depth' => 0,
+			'depth' => 1,
 			'fallback_cb' => '_frozen_wasteland'
 			));
 }
@@ -863,7 +934,7 @@ function	mainNavigation() {
 			'link_before' => '',
 			'link_after' => '',
 			'items_wrap' => '<nav id="%1$s"><ul id="%2$s">%3$s</ul></nav>',
-			'depth' => 1,
+			'depth' => 0,
 			'fallback_cb' => '_frozen_navigation'
 			));
 }
