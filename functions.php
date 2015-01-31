@@ -8,7 +8,6 @@
 	 */
 	
 	//Declare definitions.
-	if (!defined('DEVELOPMENT'))			define('DEVELOPMENT', false);
 	if (!defined('HEADER_IMAGE'))			define('HEADER_IMAGE', get_bloginfo('template_directory') . '/images/header.gif');
 	if (!defined('HEADER_IMAGE_WIDTH'))		define('HEADER_IMAGE_WIDTH', 1000);
 	if (!defined('HEADER_IMAGE_HEIGHT'))	define('HEADER_IMAGE_HEIGHT', 150);
@@ -650,6 +649,9 @@
 	
 		//If this isn't the admin panel.
 		if (!is_admin()) {
+			//Get all of the CSS files.
+			
+			
 			//If the production is live. 
 			if (!DEVELOPMENT) {
 				//Register stylesheets.
@@ -658,30 +660,25 @@
 				//Queue CSS.
 				wp_enqueue_style('frozen-min');
 			} else {
-				//Register stylesheets.
-				wp_register_style('frozen-fonts', "$styleDir/fonts.css", array(), '', 'all');
-				wp_register_style('frozen-reset', "$styleDir/reset.css", array(), '', 'all');
-				wp_register_style('frozen-clear', "$styleDir/clear.css", array(), '', 'all');
-				wp_register_style('frozen-stylesheet', "$styleDir/stylesheet.css", array(), '', 'all');
-				wp_register_style('frozen-responsive', "$styleDir/responsive.css", array(), '', 'all');
-				wp_register_style('frozen-icebox', "$styleDir/icebox.css", array(), '', 'all');
+				//Get all CSS files.
+				$css	=	glob("$styleDir/*.{css}", GLOB_BRACE);
 				
-				//Queue CSS.
-				wp_enqueue_style('frozen-fonts');
-				wp_enqueue_style('frozen-reset');
-				wp_enqueue_style('frozen-clear');
-				wp_enqueue_style('frozen-stylesheet');
-				wp_enqueue_style('frozen-responsive');
-				wp_enqueue_style('frozen-icebox');
+				//For each CSS file.
+				foreach($css as $file) {
+					//Get the filename.
+					$fileName	=	preg_replace('/[^a-z0-9]+/', '-', strtolower($file));
+					
+					//Register the stylesheet.
+					wp_register_style($fileName, "$styleDir/$file", array(), '', 'all');
+				
+					//Queue the stylesheet.
+					wp_enqueue_style($fileName);
+				}
 			}
-	
+			
 			//Register scripts.
-			wp_register_script('html5shiv', "$scriptDir/html5shiv.js", array('jquery'), '3.7.0', true);
-			wp_register_script('modernizr', "$scriptDir/modernizr.custom.min.js", array('jquery'), '2.6.2', true);
-			wp_register_script('fixes', "$scriptDir/fixes.js", array('jquery'), '1.0.0', true);
-			wp_register_script('responsive', "$scriptDir/responsive.js", array('fixes'), '1.0.0', true);
-			wp_register_script('icebox', "$scriptDir/icebox.js", array('fixes'), '1.0.0', true);
-			wp_register_script('frozen', "$scriptDir/functions.js", array('icebox'), '1.0.0', true);
+			wp_register_script('modernizr', "$scriptDir/modernizr.min.js", array('jquery'), '2.6.2', true);
+			wp_register_script('frozen-fixes', "$scriptDir/frozen.fixes.js", array('jquery'), '1.0.0', true);
 
 			//Queue jQuery.
 			wp_enqueue_script('jquery');
@@ -690,11 +687,8 @@
 			if (is_singular() AND comments_open() AND (get_option('thread_comments') == 1))	wp_enqueue_script('comment-reply');
 	
 			//Queue custom JS.
-			wp_enqueue_script('html5shiv');
-			wp_enqueue_script('fixes');
-			wp_enqueue_script('responsive');
-			wp_enqueue_script('icebox');
-			wp_enqueue_script('frozen');
+			wp_enqueue_script('modernizr');
+			wp_enqueue_script('frozen-fixes');
 		}
 	}
 	
@@ -844,6 +838,9 @@
 	
 		//Add custom menu support.
 		add_theme_support('menus');
+		
+		//Add HTML5 theme support.
+		add_theme_support('html5', array('comment-list', 'comment-form', 'search-form', 'gallery', 'caption'));
 	
 		//Register navigation menues. 
 		register_nav_menus(array(
