@@ -10,10 +10,14 @@
 	
 	//If a password is required. 
 	if (post_password_required()) {
-		?><p class="alert warning"><?php _e('This post is password protected. You must enter a password to view comments.', 'bonestheme'); ?></p><?php return;
+		?>
+			<p class="alert warning">
+				<?php _e('This post is password protected. You must enter a password to view comments.', 'bonestheme'); ?>
+			</p>
+		<?php return;
 	}
 ?>
-<section id="comments">
+<section class="comments">
 	<?php if (have_comments()) { ?>
 		<h3>
 			<?php comments_number(__('No Comments', 'bonestheme'),
