@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Frozen Bones uses a centralized classless, yet pluggable interface for implementation. This 
+	 * FrozenBones uses a centralized classless, yet pluggable interface for implementation. This 
 	 * makes development easy for novice and veteran developers alike. By prepending Frozen 
 	 * functions with a namespace-like phrase (_frozen) and by making each function pluggable, 
 	 * child themes and plugins will not encounter conflicts or overwrites. 
@@ -27,7 +27,7 @@
 	//If the function exists. 
 	if (!function_exists('_frozen')) {
 		/**
-		 * Frozen Bones initialization.
+		 * FrozenBones initialization.
 		 */
 		function	_frozen() {
 			//Clean the head.
@@ -86,7 +86,7 @@
 		 */
 		function	_frozen_admin_footer() {
 			//Echo the content.
-			_e('<span id="footer-thankyou">Built using <a href="http://pxoink.net/projects/frozen-bones" target="_blank">Frozen Bones</a> based on <a href="http://themble.com/bones" target="_blank">Bones</a>.', 'bonestheme');
+			_e('<span id="footer-thankyou">Built using <a href="http://pxoink.net/projects/frozen-bones" target="_blank">FrozenBones</a> based on <a href="http://themble.com/bones" target="_blank">Bones</a>.', 'bonestheme');
 		}
 	}
 	
@@ -117,7 +117,7 @@
 			?>
 				<div class="wrap">
 					<?php screen_icon(); ?>
-					<h2>Frozen Bones Settings</h2>
+					<h2>FrozenBones Settings</h2>
 					<form method="post" action="<?php print($_SERVER['REQUEST_URI']); ?>">
 						<?php 
 							//Add the option group.
@@ -563,7 +563,7 @@
 		 */
 		function	_frozen_login_css() {
 			//Queue the login CSS. 
-			wp_enqueue_style('frozen_login_css', get_bloginfo('template_directory') . '/css/wordpress.css', false );
+			wp_enqueue_style('frozen_login_css', get_bloginfo('template_directory') . '/css/login.css', false);
 		}
 	}
 	
@@ -789,7 +789,7 @@
 			//If this isn't the admin panel.
 			if (!is_admin()) {
 				//Get all CSS files.
-				$css	=	preg_grep('/wordpress\.css/', glob("$styleDir/*.{css}", GLOB_BRACE), PREG_GREP_INVERT);
+				$css	=	preg_grep('/login\.css/', glob("$styleDir/*.{css}", GLOB_BRACE), PREG_GREP_INVERT);
 				
 				//For each CSS file.
 				foreach($css as $file) {
@@ -797,27 +797,29 @@
 					$fileName	=	preg_replace('/[^a-z0-9]+/', '-', strtolower($file));
 					
 					//Register the stylesheet.
-					wp_register_style($fileName, "$styleDir/$file", array(), '', 'all');
+					wp_register_style($fileName, "$styleDir/$file", array(), null, 'all');
 				
 					//Queue the stylesheet.
 					wp_enqueue_style($fileName);
 				}
 				
-				//Register scripts.
-				wp_register_script('modernizr', "$scriptDir/modernizr.min.js", array('jquery'), '2.6.2', true);
-				wp_register_script('frozen-custom', "$scriptDir/frozen.custom.js", array('jquery'), '0.1.0', true);
-				wp_register_script('frozen-fixes', "$scriptDir/frozen.fixes.js", array('jquery'), '0.1.0', true);
-	
 				//Queue jQuery.
 				wp_enqueue_script('jquery');
+				
+				//For each JS file.
+				foreach($js as $file) {
+					//Get the filename.
+					$fileName	=	preg_replace('/[^a-z0-9]+/', '-', strtolower($file));
+						
+					//Register scripts.
+					wp_register_script($fileName, "$scriptDir/$file", array('jquery'), null, true);
+						
+					//Queue custom JS.
+					wp_enqueue_script($fileName);
+				}
 		
 				//Queue the comment script for threaded comments.
 				if (is_singular() AND comments_open() AND (get_option('thread_comments') == 1))	wp_enqueue_script('comment-reply');
-		
-				//Queue custom JS.
-				wp_enqueue_script('modernizr');
-				wp_enqueue_script('frozen-fixes');
-				wp_enqueue_script('frozen-custom');
 			}
 		}
 	}
