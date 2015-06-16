@@ -189,7 +189,7 @@
 									//For each ancestor.
 									foreach($ancestors as $anc) {
 										?>
-											<li<?php if ($>
+											<li>
 												<a href="<?php print(get_permalink($anc -> ID)); ?>"
 												title="<?php print(get_the_title($anc)); ?>"><?php print(get_the_title($anc)); ?></a>
 											</li>
@@ -198,13 +198,12 @@
 								}
 							}
 						?>
-							<li class="current">
+						<li class="current">
 						<?php 
 							//Get the title.
 							the_title();
 						?>
-							</li>
-						<?php 
+						</li>
 					</ul>
 				<?php 
 			}
