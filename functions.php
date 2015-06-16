@@ -12,7 +12,7 @@
 	
 	//Declare definitions.
 	if (!defined('HEADER_IMAGE'))			define('HEADER_IMAGE', 
-			get_bloginfo('template_directory') . '/images/header.gif');
+			get_template_directory_uri() . '/images/header.gif');
 	if (!defined('HEADER_IMAGE_WIDTH'))		define('HEADER_IMAGE_WIDTH', 1000);
 	if (!defined('HEADER_IMAGE_HEIGHT'))	define('HEADER_IMAGE_HEIGHT', 150);
 	if (!defined('HEADER_TEXTCOLOR'))		define('HEADER_TEXTCOLOR', '000000');
@@ -563,7 +563,7 @@
 		 */
 		function	_frozen_login_css() {
 			//Queue the login CSS. 
-			wp_enqueue_style('frozen_login_css', get_bloginfo('template_directory') . '/css/login.css', false);
+			wp_enqueue_style('frozen_login_css', get_template_directory() . '/css/login.css', false);
 		}
 	}
 	
@@ -781,41 +781,50 @@
 		function	_frozen_queue() {
 			//Declare global variables.
 			global	$wp_styles;
-		
+			
 			//Declare variables.
-			$styleDir	=	sprintf("%s/css", get_bloginfo('template_directory'));
-			$scriptDir	=	sprintf("%s/js", get_bloginfo('template_directory'));
-		
+			$styleDir	=	sprintf("%s/css", get_template_directory());
+			$scriptDir	=	sprintf("%s/js", get_template_directory());
+			
 			//If this isn't the admin panel.
 			if (!is_admin()) {
 				//Get all CSS files.
 				$css	=	preg_grep('/login\.css/', glob("$styleDir/*.{css}", GLOB_BRACE), PREG_GREP_INVERT);
 				
-				//For each CSS file.
-				foreach($css as $file) {
-					//Get the filename.
-					$fileName	=	preg_replace('/[^a-z0-9]+/', '-', strtolower($file));
+				//If there are CSS files.
+				if (is_array($css) && count($css) > 0) {
+					//For each CSS file.
+					foreach($css as $file) {
+						//Get the filename.
+						$fileName	=	preg_replace('/[^a-z0-9]+/', '-', strtolower($file));
+						
+						//Register the stylesheet.
+						wp_register_style($fileName, "$styleDir/$file", array(), null, 'all');
 					
-					//Register the stylesheet.
-					wp_register_style($fileName, "$styleDir/$file", array(), null, 'all');
-				
-					//Queue the stylesheet.
-					wp_enqueue_style($fileName);
+						//Queue the stylesheet.
+						wp_enqueue_style($fileName);
+					}
 				}
 				
 				//Queue jQuery.
 				wp_enqueue_script('jquery');
 				
-				//For each JS file.
-				foreach($js as $file) {
-					//Get the filename.
-					$fileName	=	preg_replace('/[^a-z0-9]+/', '-', strtolower($file));
-						
-					//Register scripts.
-					wp_register_script($fileName, "$scriptDir/$file", array('jquery'), null, true);
-						
-					//Queue custom JS.
-					wp_enqueue_script($fileName);
+				//Get all JS files.
+				$js		=	glob("$scriptDir/*.{js}", GLOB_BRACE);
+				
+				//If there are JS files.
+				if (is_array($js) && count($js) > 0) {
+					//For each JS file.
+					foreach($js as $file) {
+						//Get the filename.
+						$fileName	=	preg_replace('/[^a-z0-9]+/', '-', strtolower($file));
+							
+						//Register scripts.
+						wp_register_script($fileName, "$scriptDir/$file", array('jquery'), null, true);
+							
+						//Queue custom JS.
+						wp_enqueue_script($fileName);
+					}
 				}
 		
 				//Queue the comment script for threaded comments.
