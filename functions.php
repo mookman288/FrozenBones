@@ -168,49 +168,46 @@
 		 * Custom breadcrumbs based on Cazue breadcrumbs.
 		 */
 		function	_frozen_breadcrumbs() {
-			?>
-				<div class="breadcrumbs">
-					<?php
-						//Depending on the page. 
-						if (!is_home() && !is_front_page()) {
-							?>
-								<a href="<?php print(home_url('/')); ?>">Home</a>
-								<span class="seperator"> / </span>
-								<?php 
-									//Depending on the page.
-									if (is_category() || is_single()) {
-										//Get the category.
-										the_category('<span class="seperator"> / </span>');
-										
-										//If this is a single. 
-										if (is_single())	{
-											?><span class="seperator"> / </span><?php 
-										}
-									} elseif (is_page()) {
-										//If this post doesn't have a parent.
-										if (!$post -> post_parent) {
-											//Get ancestors.
-											$ancestors	=	get_post_ancestors($post -> ID);
-											
-											//For each ancestor.
-											foreach($ancestors as $anc) {
-												?>
-													<a href="<?php print(get_permalink($anc -> ID)); ?>"
-													title="<?php print(get_the_title($anc)); ?>"><?php print(get_the_title($anc)); ?></a>
-													<span class="seperator"> / </span>
-												<?php 
-											}
-										}
-									}
+			//Depending on the page. 
+			if (!is_home() && !is_front_page()) {
+				?>
+					<ul class="breadcrumbs">
+						<li>
+							<a href="<?php print(home_url('/')); ?>">Home</a>
+						</li>
+						<?php 
+							//Depending on the page.
+							if (is_category() || is_single()) {
+								//Get the category.
+								the_category();
+							} elseif (is_page()) {
+								//If this post doesn't have a parent.
+								if (!$post -> post_parent) {
+									//Get ancestors.
+									$ancestors	=	get_post_ancestors($post -> ID);
 									
-									//Get the title.
-									the_title();
-								?>
-							<?php 
-						}
-					?>
-				</div>
-			<?php 
+									//For each ancestor.
+									foreach($ancestors as $anc) {
+										?>
+											<li<?php if ($>
+												<a href="<?php print(get_permalink($anc -> ID)); ?>"
+												title="<?php print(get_the_title($anc)); ?>"><?php print(get_the_title($anc)); ?></a>
+											</li>
+										<?php 
+									}
+								}
+							}
+						?>
+							<li class="current">
+						<?php 
+							//Get the title.
+							the_title();
+						?>
+							</li>
+						<?php 
+					</ul>
+				<?php 
+			}
 		}
 	}
 	
@@ -546,7 +543,7 @@
 			?>
 				<style type="text/css">
 					header[role=banner] {
-						background-image: url('<?php get_bloginfo('template-directory') ?>/images/logo.png');
+						background-image: url('<?php print(get_template_directory()); ?>/images/logo.png');
 					}
 				</style>
 			<?php
@@ -783,8 +780,8 @@
 			global	$wp_styles;
 			
 			//Declare variables.
-			$styleDir	=	sprintf("%s/css", get_template_directory());
-			$scriptDir	=	sprintf("%s/js", get_template_directory());
+			$styleDir	=	get_template_directory() . "/css";
+			$scriptDir	=	get_template_directory() . "/js";
 			
 			//If this isn't the admin panel.
 			if (!is_admin()) {
