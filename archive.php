@@ -51,20 +51,17 @@
 										</p>
 									<?php } ?>
 								</section>
-								<aside>
-									<?php _frozen_page_navi(); ?>
-								</aside>
 							</footer>
 						<?php } ?>
 					</article>
-					<footer>
-						<?php comments_template(); ?>
-					</footer>
 				<?php endwhile; else : ?>
 					<article class="post-not-found">
 						<?php _frozen_not_found(); ?>
 					</article>
 				<?php endif; ?>
+				<footer>
+					<?php _frozen_page_navi(); ?>
+				</footer>
 			</section>
 			<?php get_sidebar(); ?>
 <?php get_footer(); ?>

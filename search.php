@@ -13,8 +13,8 @@
 							</h1>
 						</header>
 						<section class="content">
-							<?php the_content(); ?>
 							<?php get_search_form(); ?>
+							<?php the_content(); ?>
 						</section>
 						<footer>
 							<?php _frozen_page_navi(); ?>

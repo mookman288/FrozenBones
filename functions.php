@@ -650,10 +650,23 @@
 		 */
 		function	_frozen_page_navi() {
 			//Declare globals.
-			global	$wp_query;
+			global	$wp_query, $wp_rewrite;
 			
 			//Declare variables.
-			$num	=	655353655353;
+			$links	=	paginate_links(array(
+					'base' => (!$wp_rewrite -> using_permalinks()) ? 
+					add_query_arg('page', '%#%') : 
+        			user_trailingslashit(trailingslashit(remove_query_arg('s', get_pagenum_link(1))).'page/%#%/', 'page'),
+					'format' => '', 
+					'current' => max(1, get_query_var('page')),
+					'total' => $wp_query -> max_num_pages,
+					'prev_text' => '&lt;&lt;',
+					'next_text' => '&gt;&gt;',
+					'type' => 'array',
+					'end_size' => 5,
+					'mid_size' => 5, 
+					'add_args' => array()
+			));
 			
 			//If there are no pages, return.
 			if ($wp_query -> max_num_pages < 1)	return;
@@ -661,23 +674,24 @@
 			//Start output buffer.
 			ob_start();
 			
-			?>
-				<span class="pagination">
-					<?php 
-						print(paginate_links(array(
-								'base' => str_replace($num, '%#%', esc_url(get_pagenum_link($num))),
-								'format' => '',
-								'current' => max(1, get_query_var('paged')),
-								'total' => $wp_query->max_num_pages,
-								'prev_text' => '>>',
-								'next_text' => '<<',
-								'type' => 'plain',
-								'end_size' => 3,
-								'mid_size' => 3
-								)));
-					?>
-				</span>
-			<?php 
+			//If there are links.
+			if (is_array($links) && count($links) > 0) {
+				?>
+					<div class="pagination">
+						<ul class="pagination">
+						<?php 
+							foreach($links as $link) {
+								?>
+									<li>
+										<?php print($link); ?>
+									</li>
+								<?php 
+							}
+						?>
+						</ul>
+					</div>
+				<?php 
+			}
 			
 			//Print the output.
 			print(ob_get_clean());
