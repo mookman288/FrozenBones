@@ -1076,7 +1076,7 @@
 											%3$s
 										</ul>
 									</nav>',
-					'depth' => 1,
+					'depth' => 0,
 					'fallback_cb' => '_frozen_wasteland'
 					));
 		}

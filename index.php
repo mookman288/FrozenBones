@@ -19,24 +19,35 @@
 									_frozen_get_the_author_posts_link());
 								?>
 							</p>
+							<?php if (has_post_thumbnail()) { ?>
+								<div class="featured-image">
+									<?php the_post_thumbnail('full'); ?>
+								</div>
+							<?php } ?>
 						</header>
 						<section class="content">
 							<?php the_content(); ?>
 						</section>
-						<footer>
-							<section>
-								<p class="cats"><?php printf(__('Filed under %s.'), get_the_category_list(', ')); ?></p>
-								<p class="tags">
-									<?php 
-										the_tags(sprintf('<span class="tags-title">%s</span> ', __( 'Tags:', 'bonestheme' )), 
-										', ', ''); 
-									?>
-								</p>
-							</section>
-							<aside>
-								<?php _frozen_page_navi(); ?>
-							</aside>
-						</footer>
+						<?php if (strlen(get_the_category_list()) > 1 || has_tag()) { ?>
+							<footer>
+								<section>
+									<?php if (strlen(get_the_category_list()) > 1) { ?>
+										<p class="cats"><?php printf(__('Filed under %s.'), get_the_category_list(', ')); ?></p>
+									<?php } ?>
+									<?php if (has_tag()) { ?>
+										<p class="tags">
+											<?php 
+												the_tags(sprintf('<span class="tags-title">%s</span> ', __( 'Tags:', 'bonestheme' )), 
+												', ', ''); 
+											?>
+										</p>
+									<?php } ?>
+								</section>
+								<aside>
+									<?php _frozen_page_navi(); ?>
+								</aside>
+							</footer>
+						<?php } ?>
 					</article>
 					<footer>
 						<?php comments_template(); ?>

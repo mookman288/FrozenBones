@@ -46,7 +46,7 @@
 		<form id="comment-form" action="<?php print(get_option('siteurl')); ?>/wp-comments-post.php" method="post">
 			<?php if (is_user_logged_in()) { ?>
 				<p>
-					<?php _e('Logged in as', 'bonestheme'); ?>
+					<?php _e('Logged in as', 'bonestheme'); ?> 
 					<a href="<?php print(get_option('siteurl')); ?>/wp-admin/profile.php"><?php print($user_identity); ?></a>. 
 					<a href="<?php print(wp_logout_url(get_permalink())); ?>"><?php _e('Logout', 'bonestheme'); ?></a>?
 				</p>
