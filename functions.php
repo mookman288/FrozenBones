@@ -335,7 +335,12 @@
 					<article id="comment-<?php comment_ID(); ?>">
 						<header>
 							<?php get_avatar($comment, 40); ?>
-							<cite class="card"><?php printf('Posted <time class="updated" datetime="%1$s" pubdate>%2$s</time> by <span class="author">%3$s</span>.', comment_time('Y-m-j'), comment_time(get_option('date_format')), get_comment_author_link()); ?></cite>
+							<cite class="card">
+								<?php printf('Posted <time class="updated" datetime="%1$s" pubdate>%2$s</time> by <span class="author">%3$s</span>.', 
+								comment_time('Y-m-j'), 
+								comment_time(get_option('date_format')), 
+								get_comment_author_link()); ?>
+							</cite>
 						</header>
 						<section>
 							<?php if ($comment -> comment_approved == '0') { ?>
@@ -344,13 +349,13 @@
 							<?php comment_text(); ?>
 						</section>
 						<footer>
-							<p><?php printf(__('<a href="%s" target="_blank">Permalink</a>%s | %s'), 
-									htmlspecialchars(get_comment_link($comment -> comment_ID)), 
-									edit_comment_link(__('Edit', 'bonestheme'),' | ',''), 
-									comment_reply_link(array_merge($args, array('reply_text' => 'Reply', 
-											'login_text' => 'Login', 
-											'depth' => $depth, 
-											'max_depth' => $args['max_depth'])))); ?></p>
+							<?php printf(__('<a href="%s" target="_blank">Permalink</a>%s %s'), 
+							htmlspecialchars(get_comment_link($comment -> comment_ID)), 
+							edit_comment_link(__('Edit', 'bonestheme'), ' ', ''), 
+							comment_reply_link(array_merge($args, array('reply_text' => 'Reply', 
+							'login_text' => 'Login', 
+							'depth' => $depth, 
+							'max_depth' => $args['max_depth'])))); ?>
 						</footer>
 					</article>
 				</li>
@@ -619,14 +624,16 @@
 			
 			?>
 							<header>
-								<h1><?php _e('404: Not Found!', 'bonestheme'); ?></h1>
+								<h1><?php _e($header, 'bonestheme'); ?></h1>
 							</header>
 							<section class="content">
-								<p><?php _e('This post does not exist. Please try the following: ', 'bonestheme'); ?></p>
+								<p><?php _e('Please try the following: ', 'bonestheme'); ?></p>
 								<ul>
-									<li><?php _e('Double check the address for syntax errors.', 'bonestheme'); ?></li>
+									<li>
+										<?php _e('Double check the address or search terms for syntax errors.', 'bonestheme'); ?>
+									</li>
 									<li><?php _e('Ensure that your cache is refreshed.', 'bonestheme'); ?></li>
-									<li><?php _e('Use the search form below:', 'bonestheme'); ?></li>
+									<li><?php _e('Use the search form below or adjust your search:', 'bonestheme'); ?></li>
 								</ul>
 								<?php get_search_form(); ?>
 							</section>
@@ -655,10 +662,10 @@
 			//Declare variables.
 			$links	=	paginate_links(array(
 					'base' => (!$wp_rewrite -> using_permalinks()) ? 
-					add_query_arg('page', '%#%') : 
-        			user_trailingslashit(trailingslashit(remove_query_arg('s', get_pagenum_link(1))).'page/%#%/', 'page'),
+					add_query_arg('paged', '%#%') : 
+        			user_trailingslashit(trailingslashit(remove_query_arg('s', get_pagenum_link(1))).'page/%#%/', 'paged'),
 					'format' => '', 
-					'current' => max(1, get_query_var('page')),
+					'current' => max(1, get_query_var('paged')),
 					'total' => $wp_query -> max_num_pages,
 					'prev_text' => '&lt;',
 					'next_text' => '&gt;',
