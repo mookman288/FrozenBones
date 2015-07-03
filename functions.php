@@ -802,17 +802,20 @@
 			//Declare variables.
 			$styleDir	=	get_template_directory_uri() . "/css";
 			$scriptDir	=	get_template_directory_uri() . "/js";
+			$stylePath	=	get_template_directory() . "/css";
+			$scriptPath	=	get_template_directory() . "/js";
 			
 			//If this isn't the admin panel.
 			if (!is_admin()) {
 				//Get all CSS files.
-				$css	=	preg_grep('/login\.css/', glob("$styleDir/*.{css}", GLOB_BRACE), PREG_GREP_INVERT);
+				$css	=	preg_grep('/login\.css/', glob("$stylePath/*.{css}", GLOB_BRACE), PREG_GREP_INVERT);
 				
 				//If there are CSS files.
 				if (is_array($css) && count($css) > 0) {
 					//For each CSS file.
 					foreach($css as $file) {
 						//Get the filename.
+						$file		=	basename($file);
 						$fileName	=	preg_replace('/[^a-z0-9]+/', '-', strtolower($file));
 						
 						//Register the stylesheet.
@@ -827,13 +830,14 @@
 				wp_enqueue_script('jquery');
 				
 				//Get all JS files.
-				$js		=	glob("$scriptDir/*.{js}", GLOB_BRACE);
+				$js		=	glob("$scriptPath/*.{js}", GLOB_BRACE);
 				
 				//If there are JS files.
 				if (is_array($js) && count($js) > 0) {
 					//For each JS file.
 					foreach($js as $file) {
 						//Get the filename.
+						$file		=	basename($file);
 						$fileName	=	preg_replace('/[^a-z0-9]+/', '-', strtolower($file));
 							
 						//Register scripts.
