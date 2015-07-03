@@ -547,7 +547,7 @@
 			?>
 				<style type="text/css">
 					header[role=banner] {
-						background-image: url('<?php print(get_template_directory()); ?>/images/logo.png');
+						background-image: url('<?php print(get_template_directory_uri()); ?>/images/logo.png');
 					}
 				</style>
 			<?php
@@ -564,7 +564,7 @@
 		 */
 		function	_frozen_login_css() {
 			//Queue the login CSS. 
-			wp_enqueue_style('frozen_login_css', get_template_directory() . '/css/login.css', false);
+			wp_enqueue_style('frozen_login_css', get_template_directory_uri() . '/css/login.css', false);
 		}
 	}
 	
@@ -800,8 +800,8 @@
 			global	$wp_styles;
 			
 			//Declare variables.
-			$styleDir	=	get_template_directory() . "/css";
-			$scriptDir	=	get_template_directory() . "/js";
+			$styleDir	=	get_template_directory_uri() . "/css";
+			$scriptDir	=	get_template_directory_uri() . "/js";
 			
 			//If this isn't the admin panel.
 			if (!is_admin()) {
