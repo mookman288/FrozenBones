@@ -186,6 +186,9 @@
 									//Get ancestors.
 									$ancestors	=	get_post_ancestors($post -> ID);
 									
+									//Sort the ancestors.
+									krsort($ancestors);
+									
 									//For each ancestor.
 									foreach($ancestors as $anc) {
 										?>
