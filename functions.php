@@ -193,8 +193,10 @@
 									foreach($ancestors as $anc) {
 										?>
 											<li>
-												<a href="<?php print(get_permalink($anc -> ID)); ?>"
-												title="<?php print(get_the_title($anc)); ?>"><?php print(get_the_title($anc)); ?></a>
+												<a href="<?php print(get_permalink($anc)); ?>" 
+													title="<?php print(get_the_title($anc)); ?>">
+													<?php print(get_the_title($anc)); ?>
+												</a>
 											</li>
 										<?php 
 									}
