@@ -6,7 +6,8 @@
 	//Declare variables. 
 	$total	=	$wp_query -> found_posts;
 	$total	=	($total !== 1) ? __("$total results found", 'bones-theme') : __("$total result found", 'bones-theme');
-	$header	=	(!isset($_GET['s'])) ? "$total." : "$total " . __("searching for <em>" . $_GET['s'] . "</em>.", 'bones-theme');
+	$header	=	(!isset($_GET['s'])) ? "$total." : "$total " . __(sprintf("searching for <em>%s</em>.", 
+			stripslashes($_GET['s'])), 'bones-theme');
 ?>
 			<section id="main">		
 				<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
