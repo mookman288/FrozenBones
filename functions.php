@@ -1,30 +1,30 @@
 <?php
 	/**
-	 * FrozenBones uses a centralized classless, yet pluggable interface for implementation. This 
-	 * makes development easy for novice and veteran developers alike. By prepending Frozen 
-	 * functions with a namespace-like phrase (_frozen) and by making each function pluggable, 
-	 * child themes and plugins will not encounter conflicts or overwrites. 
-	 * 
+	 * FrozenBones uses a centralized classless, yet pluggable interface for implementation. This
+	 * makes development easy for novice and veteran developers alike. By prepending Frozen
+	 * functions with a namespace-like phrase (_frozen) and by making each function pluggable,
+	 * child themes and plugins will not encounter conflicts or overwrites.
+	 *
 	 * @author PxO Ink (http://pxoink.net)
 	 * @uses Eddie Machado's bones
 	 * @package bones
 	 */
-	
+
 	//Declare definitions.
-	if (!defined('HEADER_IMAGE'))			define('HEADER_IMAGE', 
+	if (!defined('HEADER_IMAGE'))			define('HEADER_IMAGE',
 			get_template_directory_uri() . '/images/header.gif');
 	if (!defined('HEADER_IMAGE_WIDTH'))		define('HEADER_IMAGE_WIDTH', 1000);
 	if (!defined('HEADER_IMAGE_HEIGHT'))	define('HEADER_IMAGE_HEIGHT', 150);
 	if (!defined('HEADER_TEXTCOLOR'))		define('HEADER_TEXTCOLOR', '000000');
 	if (!defined('NO_HEADER_TEXT'))			define('NO_HEADER_TEXT', true);
-	
+
 	//Declare requirements.
 	require_once(dirname(__FILE__) . '/lib/translation/translation.php');
-	
+
 	//Initialize Frozen _frozen
 	add_action('after_setup_theme', 'FrozenBones', 16);
 
-	//If the function exists. 
+	//If the function exists.
 	if (!function_exists('_frozen')) {
 		/**
 		 * FrozenBones initialization.
@@ -32,53 +32,53 @@
 		function	_frozen() {
 			//Clean the head.
 			add_action('init', '_frozen_cleanup');
-			
+
 			//Remove the WP version from RSS.
 			add_filter('the_generator', '_frozen_rss_version');
-			
+
 			//Deep clean the head.
 			add_filter('wp_head', '_frozen_cleanup_deep', 1);
-			
+
 			//Clean up the gallery output.
 			add_filter('gallery_style', '_frozen_gallery_style');
-			
+
 			//Queue styles and scripts.
 			add_action('wp_enqueue_scripts', '_frozen_queue', 999);
-			
+
 			//Setup the theme.
 			_frozen_theme_support();
-			
+
 			//Clean up image code.
 			add_filter('the_content', '_frozen_filter_paragraphs_on_images');
-			
+
 			//Clean up the excerpt.
 			add_filter('excerpt_more', '_frozen_excerpt_more');
-			
+
 			//Register the sidebars.
 			add_action('widgets_init', '_frozen_register_sidebars');
-			
+
 			//Register the search form.
 			add_filter('get_search_form', '_frozen_search_form');
-			
+
 			//If within the admin.
 			if (is_admin()) {
-				//Register the administrative options. 
+				//Register the administrative options.
 				add_action('admin_menu', '_frozen_admin_options');
 				add_action('admin_init', '_frozen_admin_register_options');
 			}
 		}
 	}
-	
+
 	//If the function exists.
 	if (!function_exists('_frozen_admin_fields')) {
 		/**
-		 * Administrative settings custom fields. 
+		 * Administrative settings custom fields.
 		 */
 		function	_frozen_admin_fields() {
-			
+
 		}
 	}
-	
+
 	//If the function exists.
 	if (!function_exists('_frozen_admin_footer')) {
 		/**
@@ -89,21 +89,21 @@
 			_e('<span id="footer-thankyou">Built using <a href="http://pxoink.net/projects/frozen-bones" target="_blank">FrozenBones</a> based on <a href="http://themble.com/bones" target="_blank">Bones</a>.', 'bonestheme');
 		}
 	}
-	
+
 	//Set the custom filter.
 	add_filter('admin_footer_text', '_frozen_admin_footer');
-	
+
 	//If the function exists.
 	if (!function_exists('_frozen_admin_options')) {
 		/**
-		 * Administrative option registers. 
+		 * Administrative option registers.
 		 */
 		function	_frozen_admin_options() {
 			//Create a new administrative menu page.
 			//add_menu_page('Frozen Plugin Settings', 'Frozen Settings', 'administrator', __FILE__, '_frozen_admin_options_page', plugins_url('/images/favicon.png', __FILE__));
 		}
 	}
-	
+
 	//If the function exists.
 	if (!function_exists('_frozen_admin_options_page')) {
 		/**
@@ -113,108 +113,118 @@
 			//Declare variables.
 			$options			=	array();
 			$options['option']	=	get_option('option_name');
-		
+
 			?>
 				<div class="wrap">
 					<?php screen_icon(); ?>
 					<h2>FrozenBones Settings</h2>
 					<form method="post" action="<?php print($_SERVER['REQUEST_URI']); ?>">
-						<?php 
+						<?php
 							//Add the option group.
 							settings_fields('option_group');
-							
+
 							//Add the setting section.
 							do_settings_sections('setting_admin');
-							
+
 							//Submit button.
 							submit_button();
 						?>
 					</form>
 				</div>
-			<?php 
+			<?php
 		}
 	}
-	
+
 	//If the function exists.
 	if (!function_exists('_frozen_admin_register_options')) {
 		/**
-		 * Registers administrative options. 
+		 * Registers administrative options.
 		 */
 		function	_frozen_admin_register_options() {
-			//Register settings. 
+			//Register settings.
 			register_setting('option_group', 'option_name', 'intval');
-			
+
 			//Add settings sections.
 			add_settings_section('setting_admin', 'Title', '_frozen_admin_section', 'setting_admin');
-			
+
 			//Add settings fields.
 			add_settings_field('setting_field', 'Title', '_frozen_admin_fields', 'setting_admin', 'setting_admin');
 		}
 	}
-	
+
 	//If the function exists.
 	if (!function_exists('_frozen_admin_section')) {
 		/**
-		 * Administrative settings sections. 
+		 * Administrative settings sections.
 		 */
 		function	_frozen_admin_section() {
-			
+
 		}
 	}
-	
+
 	//If the function exists.
 	if (!function_exists('_frozen_breadcrumbs')) {
 		/**
 		 * Custom breadcrumbs based on Cazue breadcrumbs.
 		 */
 		function	_frozen_breadcrumbs() {
-			//Depending on the page. 
+			//Depending on the page.
 			if (!is_home() && !is_front_page()) {
 				?>
 					<ul class="breadcrumbs">
 						<li>
 							<a href="<?php print(home_url('/')); ?>">Home</a>
 						</li>
-						<?php 
+						<?php
 							//Depending on the page.
 							if (is_category() || is_single()) {
 								//Get the category.
-								the_category();
+								$cats	=	get_the_category();
+
+								//For each catgory.
+								foreach($cats as $cat) {
+									?>
+										<li>
+											<a href="<?php print(get_category_link($cat -> term_id)); ?>"
+												title="<?php _e($cat -> name); ?>">
+												<?php _e($cat -> name); ?></a>
+										</li>
+									<?php
+								}
 							} elseif (is_page()) {
 								//If this post doesn't have a parent.
 								if (!$post -> post_parent) {
 									//Get ancestors.
 									$ancestors	=	get_post_ancestors($post -> ID);
-									
+
 									//Sort the ancestors.
 									krsort($ancestors);
-									
+
 									//For each ancestor.
 									foreach($ancestors as $anc) {
 										?>
 											<li>
-												<a href="<?php print(get_permalink($anc)); ?>" 
+												<a href="<?php print(get_permalink($anc)); ?>"
 													title="<?php print(get_the_title($anc)); ?>">
-													<?php print(get_the_title($anc)); ?>
-												</a>
+													<?php print(get_the_title($anc)); ?></a>
 											</li>
-										<?php 
+										<?php
 									}
 								}
 							}
 						?>
 						<li class="current">
-						<?php 
+						<?php
 							//Get the title.
 							the_title();
 						?>
 						</li>
 					</ul>
-				<?php 
+				<?php
 			}
 		}
 	}
-	
+
 	//If the function exists.
 	if (!function_exists('_frozen_cleanup')) {
 		/**
@@ -223,36 +233,36 @@
 		function	_frozen_cleanup() {
 			//Remove the WordPress generator tag.
 			remove_action('wp_head', 'wp_generator');
-		
+
 			//Remove WordPress version from CSS.
 			add_filter('style_loader_src', '_frozen_remove_wp_ver_css_js', 9999);
-		
+
 			//Remove WordPress version from JS.
 			add_filter('script_loader_src', '_frozen_remove_wp_ver_css_js', 9999);
-		
+
 			//Remove category feeds.
 			//remove_action('wp_head', 'feed_links_extra', 3);
-		
+
 			//Remove post and comments feeds.
 			//remove_action('wp_head', 'feed_links', 2);
-		
+
 			//Remove the RSD link.
 			remove_action('wp_head', 'rsd_link');
-		
+
 			//Remove the windows live writer.
 			remove_action('wp_head', 'wlwmanifest_link');
-		
+
 			//Remove the previous link.
 			//remove_action('wp_head', 'parent_post_rel_link', 10, 0);
-		
+
 			//Remove the start link.
 			//remove_action('wp_head', 'start_post_rel_link', 10, 0);
-		
+
 			//Remove the adjacent links.
 			//remove_action('wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0);
 		}
 	}
-	
+
 	//If the function exists.
 	if (!function_exists('_frozen_cleanup_deep')) {
 		/**
@@ -261,13 +271,13 @@
 		function	_frozen_cleanup_deep() {
 			//Declare global variables.
 			global $wp_widget_factory;
-		
+
 			//If the filter exists.
 			if (has_filter('wp_head', 'wp_widget_recent_comments_style')) {
 				//Remove the filter.
 				remove_filter('wp_head', 'wp_widget_recent_comments_style');
 			}
-		
+
 			//If the widget exists.
 			if (isset($wp_widget_factory -> widgets['WP_Widget_Recent_Comments'])) {
 				//Remove the action.
@@ -275,12 +285,12 @@
 			}
 		}
 	}
-	
+
 	//If the function exists.
 	if (!function_exists('_frozen_column_content')) {
 		/**
 		 * Populates columns added to post tables.
-		 * 
+		 *
 		 * @param string $column
 		 * @param integer $post_id
 		 */
@@ -289,10 +299,10 @@
 			if ($column == 'featured-image') {
 				//Get thumb information.
 				$thumb	=	get_post_thumbnail_id($post_id);
-		
+
 				//Get the image.
 				$image	=	(!$thumb) ? null : wp_get_attachment_image_src($thumb, 'frozen-thumb-125');
-		
+
 				//If there's no image.
 				if (!$image) {
 					?>&ndash;<?php
@@ -302,7 +312,7 @@
 			}
 		}
 	}
-	
+
 	//If the function exists.
 	if (!function_exists('_frozen_column_head')) {
 		/**
@@ -313,21 +323,21 @@
 		function	_frozen_column_head($defaults = array()) {
 			//Add to the defaults.
 			$defaults['featured-image']	=	'Featured Image';
-			
+
 			//Return the defaults.
 			return $defaults;
 		}
 	}
-	
+
 	//Add filters.
 	add_filter('manage_posts_columns', '_frozen_column_head');
 	add_action('manage_posts_custom_column', '_frozen_column_content', 10, 2);
-	
+
 	//If the function exists.
 	if (!function_exists('_frozen_comments')) {
 		/**
 		 * Implement custom nested comments.
-		 * 
+		 *
 		 * @param string $comment
 		 * @param string $args
 		 * @param string $depth
@@ -341,9 +351,9 @@
 						<header>
 							<?php get_avatar($comment, 40); ?>
 							<cite class="card">
-								<?php printf('Posted <time class="updated" datetime="%1$s" pubdate>%2$s</time> by <span class="author">%3$s</span>.', 
-								comment_time('Y-m-j'), 
-								comment_time(get_option('date_format')), 
+								<?php printf('Posted <time class="updated" datetime="%1$s" pubdate>%2$s</time> by <span class="author">%3$s</span>.',
+								comment_time('Y-m-j'),
+								comment_time(get_option('date_format')),
 								get_comment_author_link()); ?>
 							</cite>
 						</header>
@@ -354,20 +364,20 @@
 							<?php comment_text(); ?>
 						</section>
 						<footer>
-							<?php printf(__('<a href="%s" target="_blank">Permalink</a>%s %s'), 
-							htmlspecialchars(get_comment_link($comment -> comment_ID)), 
-							edit_comment_link(__('Edit', 'bonestheme'), ' ', ''), 
-							comment_reply_link(array_merge($args, array('reply_text' => 'Reply', 
-							'login_text' => 'Login', 
-							'depth' => $depth, 
+							<?php printf(__('<a href="%s" target="_blank">Permalink</a>%s %s'),
+							htmlspecialchars(get_comment_link($comment -> comment_ID)),
+							edit_comment_link(__('Edit', 'bonestheme'), ' ', ''),
+							comment_reply_link(array_merge($args, array('reply_text' => 'Reply',
+							'login_text' => 'Login',
+							'depth' => $depth,
 							'max_depth' => $args['max_depth'])))); ?>
 						</footer>
 					</article>
 				</li>
-			<?php 
+			<?php
 		}
 	}
-	
+
 	//If the function exists.
 	if (!function_exists('_frozen_disable_dashboard_widgets')) {
 		/**
@@ -378,28 +388,28 @@
 			remove_meta_box('dashboard_recent_drafts', 'dashboard', 'core');
 		}
 	}
-	
-	//Add action. 
+
+	//Add action.
 	add_action('admin_menu', '_frozen_disable_dashboard_widgets');
-	
+
 	//If the function exists.
 	if (!function_exists('_frozen_excerpt_more')) {
 		/**
 		 * Strips certain content from the Read More text.
-		 * 
+		 *
 		 * @param strings $more
 		 * @return string
 		 */
 		function	_frozen_excerpt_more($more) {
 			//Declare global variables.
 			global	$post;
-		
+
 			//Return the modified content.
 			return sprintf('&hellip; <a class="read-more" href="%s" title="%s %s">%s</a>', get_permalink($post -> ID),
 					 __('Read', 'bonestheme'), get_the_title($post -> ID), __('Read more', 'bonestheme'));
 		}
 	}
-	
+
 	//If the function exists.
 	if (!function_exists('_frozen_filter_paragraphs_on_images')) {
 		/**
@@ -413,12 +423,12 @@
 			return preg_replace('/<p>\s*(<a .*>)?\s*(<img .* \/>)\s*(<\/a>)?\s*<\/p>/iU', '\1\2\3', $content);
 		}
 	}
-	
+
 	//If the function exists.
 	if (!function_exists('_frozen_gallery_generate')) {
 		/**
 		 * Generates a gallery based on slug.
-		 * 
+		 *
 		 * @param string $slug
 		 * @param string $paging
 		 * @param string $order
@@ -427,33 +437,33 @@
 		 */
 		function	_frozen_gallery_generate($slug = false, $paging = true, $order = 'date', $by = 'DESC') {
 			//Declare variables.
-			$args	=	array('category_name' => $slug, 'post_type' => 'post', 'post_status' => 'publish', 
-					'nopaging' => (!$paging) ? true : false, 'order_by' => $order, 'order' => $by, 
+			$args	=	array('category_name' => $slug, 'post_type' => 'post', 'post_status' => 'publish',
+					'nopaging' => (!$paging) ? true : false, 'order_by' => $order, 'order' => $by,
 					'tax_query' => array('include_children' => true));
 			$query	=	new WP_Query($args);
-			
+
 			//Start the output buffer.
 			ob_start();
-			
+
 			//If there is no slug.
 			if (!$slug) {
-				?>You must include a category slug.<?php 
+				?>You must include a category slug.<?php
 			} else {
 				//The Loop
 				if ($query -> have_posts()) :
 					while ($query -> have_posts()) : $query -> the_post();
 						?>
 							<a href="<?php the_permalink(); ?>" class="post-image" data-caption="<?php the_title(); ?>"><?php the_post_thumbnail('frozen-thumb-400'); ?></a>
-						<?php 
+						<?php
 					endwhile;
 				endif;
 			}
-			
+
 			//Return the HTML.
 			return ob_get_clean();
 		}
 	}
-	
+
 	//If the function exists.
 	if (!function_exists('_frozen_gallery_shortcode')) {
 		/**
@@ -465,18 +475,18 @@
 		 */
 		function	_frozen_gallery_shortcode($atts, $content = null) {
 			//Declare variables.
-			$attributes	=	array('category' => false, 
-					'paging' => true, 
-					'order' => 'date', 
-					'by' => 'DESC', 
+			$attributes	=	array('category' => false,
+					'paging' => true,
+					'order' => 'date',
+					'by' => 'DESC',
 					'display' => false);
-			
+
 			//Update the attributes.
 			extract(shortcode_atts($attributes, $atts));
-			
+
 			//Generate the gallery.
 			$gallery	=	_frozen_gallery_generate($category, $paging, $order, $by);
-			
+
 			//If there is no display.
 			if (!$display) {
 				//Return the gallery.
@@ -487,12 +497,12 @@
 			}
 		}
 	}
-	
+
 	//If the function exists.
 	if (!function_exists('_frozen_gallery_style')) {
 		/**
 		 * Remove additional CSS from the gallery.
-		 * 
+		 *
 		 * @param string $css
 		 * @return string
 		 */
@@ -501,7 +511,7 @@
 			return preg_replace("!<style type='text/css'>(.*?)</style>!s", '', $css);
 		}
 	}
-	
+
 	//If the function exists.
 	if (!function_exists('_frozen_get_the_author_posts_link')) {
 		/**
@@ -512,25 +522,25 @@
 		function	_frozen_get_the_author_posts_link() {
 			//Declare globals.
 			global	$authordata;
-		
+
 			//If there is no author data, return false.
 			if (!is_object($authordata))	return false;
-		
+
 			//Create the link.
 			$link	=	sprintf('<a href="%1$s" title="%2$s" rel="author">%3$s</a>',
 					get_author_posts_url($authordata -> ID, $authordata -> user_nicename),
 					esc_attr(sprintf(__('All posts by %s'), get_the_author())),
 					get_the_author());
-		
+
 			//Return the link.
 			return $link;
 		}
 	}
-	
+
 	//If the function exists.
 	if (!function_exists('_frozen_header_style')) {
 		/**
-		 * Adds header image style support. 
+		 * Adds header image style support.
 		 */
 		function _frozen_header_style() {
 			?>
@@ -542,7 +552,7 @@
 			<?php
 		}
 	}
-	
+
 	//If the function exists.
 	if (!function_exists('_frozen_header_style_admin')) {
 		/**
@@ -558,21 +568,21 @@
 			<?php
 		}
 	}
-	
-	//Add custom image header support. 
+
+	//Add custom image header support.
 	add_theme_support('custom_header', array('wp-head-callback' => '_frozen_header_style', 'admin-head-callback' => '_frozen_header_style_admin'));
-	
+
 	//If the function exists.
 	if (!function_exists('_frozen_login_css')) {
 		/**
-		 * Queue login CSS. 
+		 * Queue login CSS.
 		 */
 		function	_frozen_login_css() {
-			//Queue the login CSS. 
+			//Queue the login CSS.
 			wp_enqueue_style('frozen_login_css', get_template_directory_uri() . '/css/login.css', false);
 		}
 	}
-	
+
 	//If the function exists.
 	if (!function_exists('_frozen_login_title')) {
 		/**
@@ -583,23 +593,23 @@
 			return get_option('blogname');
 		}
 	}
-	
+
 	//If the function exists.
 	if (!function_exists('_frozen_login_url')) {
 		/**
-		 * Modify the login url. 
+		 * Modify the login url.
 		 */
 		function	_frozen_login_url() {
 			//Return the home url.
 			return home_url();
 		}
 	}
-	
+
 	//Add the login modifications.
 	add_action('login_enqueue_scripts', '_frozen_login_css', 10);
 	add_filter('login_headertitle', '_frozen_login_title');
 	add_filter('login_headerurl', '_frozen_login_url');
-	
+
 	//If the function exists.
 	if (!function_exists('_frozen_navigation')) {
 		/**
@@ -612,21 +622,21 @@
 						<?php wp_list_pages(array('title_li' => '')); ?>
 					</ul>
 				</nav>
-			<?php 
+			<?php
 		}
 	}
-	
+
 	//If the function exists.
 	if (!function_exists('_frozen_not_found')) {
 		/**
-		 * Displays the not found HTML. 
-		 * 
+		 * Displays the not found HTML.
+		 *
 		 * @param string $header
 		 */
 		function	_frozen_not_found($header = '404: Not Found!') {
 			//Start output buffer.
 			ob_start();
-			
+
 			?>
 							<header>
 								<h1><?php _e($header, 'bonestheme'); ?></h1>
@@ -644,17 +654,17 @@
 							</section>
 							<footer>
 								<p>
-									<?php _e("Still can't find what you're looking for? Return to the", 'bonestheme'); ?> 
+									<?php _e("Still can't find what you're looking for? Return to the", 'bonestheme'); ?>
 									<a href="<?php print(home_url()); ?>"><?php _e('homepage', 'bonestheme'); ?>.
 								</a>
 							</footer>
-			<?php 
-			
+			<?php
+
 			//Print the output.
 			print(ob_get_clean());
 		}
 	}
-	
+
 	//If the function exists.
 	if (!function_exists('_frozen_page_navi')) {
 		/**
@@ -663,53 +673,53 @@
 		function	_frozen_page_navi() {
 			//Declare globals.
 			global	$wp_query, $wp_rewrite;
-			
+
 			//Declare variables.
 			$links	=	paginate_links(array(
-					'base' => (!$wp_rewrite -> using_permalinks()) ? 
-					add_query_arg('paged', '%#%') : 
+					'base' => (!$wp_rewrite -> using_permalinks()) ?
+					add_query_arg('paged', '%#%') :
         			user_trailingslashit(trailingslashit(remove_query_arg('s', get_pagenum_link(1))).'page/%#%/', 'paged'),
-					'format' => '', 
+					'format' => '',
 					'current' => max(1, get_query_var('paged')),
 					'total' => $wp_query -> max_num_pages,
 					'prev_text' => '&lt;',
 					'next_text' => '&gt;',
 					'type' => 'array',
 					'end_size' => 5,
-					'mid_size' => 5, 
+					'mid_size' => 5,
 					'add_args' => array()
 			));
-			
+
 			//If there are no pages, return.
 			if ($wp_query -> max_num_pages < 1)	return;
-		
+
 			//Start output buffer.
 			ob_start();
-			
+
 			//If there are links.
 			if (is_array($links) && count($links) > 0) {
 				?>
 					<div class="pagination">
 						<ul class="pagination">
-						<?php 
+						<?php
 							foreach($links as $link) {
 								?>
 									<li>
 										<?php print($link); ?>
 									</li>
-								<?php 
+								<?php
 							}
 						?>
 						</ul>
 					</div>
-				<?php 
+				<?php
 			}
-			
+
 			//Print the output.
 			print(ob_get_clean());
 		}
 	}
-	
+
 	//If the function exists.
 	if (!function_exists('_frozen_post_field')) {
 		/**
@@ -718,25 +728,25 @@
 		function	_frozen_post_fields() {
 			//Declare global variables.
 			global $post;
-			
+
 			//Declare variables.
 			$meta	=	get_post_meta($post -> ID, '', true);
-			
+
 			//Start output buffer.
 			ob_start();
-		
+
 			//Nonce.
 			wp_nonce_field('post-field', '_frozen_nonce[]');
-		
+
 			?>
-		
+
 			<?php
-		
+
 			//Print the output.
 			print(ob_get_clean());
 		}
 	}
-	
+
 	//If the function exists.
 	if (!function_exists('_frozen_post_metaboxes')) {
 		/**
@@ -747,10 +757,10 @@
 			//add_meta_box('id', 'title', '_frozen_post_fields', 'post', 'side');
 		}
 	}
-	
+
 	//Add meta boxes.
 	//add_action('add_meta_boxes', '_frozen_post_metaboxes');
-	
+
 	//If the function exists.
 	if (!function_exists('_frozen_post_save_fields')) {
 		/**
@@ -773,10 +783,10 @@
 						return $post -> ID;
 					}
 				}
-		
+
 				//If this is a revision.
 				if ($post -> post_type == 'revision') return;
-		
+
 				//If there are post fields.
 				if (isset($_POST['_frozen_post_fields']) && is_array($_POST['_frozen_post_fields'])) {
 					//For each custom post field.
@@ -794,7 +804,7 @@
 			}
 		}
 	}
-	
+
 	//If the function exists.
 	if (!function_exists('_frozen_queue')) {
 		/**
@@ -803,18 +813,18 @@
 		function	_frozen_queue() {
 			//Declare global variables.
 			global	$wp_styles;
-			
+
 			//Declare variables.
 			$styleDir	=	get_template_directory_uri() . "/css";
 			$scriptDir	=	get_template_directory_uri() . "/js";
 			$stylePath	=	get_template_directory() . "/css";
 			$scriptPath	=	get_template_directory() . "/js";
-			
+
 			//If this isn't the admin panel.
 			if (!is_admin()) {
 				//Get all CSS files.
 				$css	=	preg_grep('/login\.css/', glob("$stylePath/*.{css}", GLOB_BRACE), PREG_GREP_INVERT);
-				
+
 				//If there are CSS files.
 				if (is_array($css) && count($css) > 0) {
 					//For each CSS file.
@@ -822,21 +832,21 @@
 						//Get the filename.
 						$file		=	basename($file);
 						$fileName	=	preg_replace('/[^a-z0-9]+/', '-', strtolower($file));
-						
+
 						//Register the stylesheet.
 						wp_register_style($fileName, "$styleDir/$file", array(), null, 'all');
-					
+
 						//Queue the stylesheet.
 						wp_enqueue_style($fileName);
 					}
 				}
-				
+
 				//Queue jQuery.
 				wp_enqueue_script('jquery');
-				
+
 				//Get all JS files.
 				$js		=	glob("$scriptPath/*.{js}", GLOB_BRACE);
-				
+
 				//If there are JS files.
 				if (is_array($js) && count($js) > 0) {
 					//For each JS file.
@@ -844,25 +854,25 @@
 						//Get the filename.
 						$file		=	basename($file);
 						$fileName	=	preg_replace('/[^a-z0-9]+/', '-', strtolower($file));
-							
+
 						//Register scripts.
 						wp_register_script($fileName, "$scriptDir/$file", array('jquery'), null, true);
-							
+
 						//Queue custom JS.
 						wp_enqueue_script($fileName);
 					}
 				}
-		
+
 				//Queue the comment script for threaded comments.
 				if (is_singular() AND comments_open() AND (get_option('thread_comments') == 1))	wp_enqueue_script('comment-reply');
 			}
 		}
 	}
-	
+
 	//If the function exists.
 	if (!function_exists('_frozen_register_sidebars')) {
 		/**
-		 * Function to register various sidebars. 
+		 * Function to register various sidebars.
 		 */
 		function	_frozen_register_sidebars() {
 			register_sidebar(array(
@@ -876,23 +886,23 @@
 			));
 		}
 	}
-	
+
 	//If the function exists.
 	if (!function_exists('_frozen_related_posts')) {
 		/**
 		 * Displays related posts.
-		 * 
+		 *
 		 * @param number $posts
 		 */
 		function	_frozen_related_posts($posts = '5') {
 			//Declare global variables.
 			global	$post;
-			
+
 			//Declare variables.
 			$tags		=	wp_get_post_tags($post -> ID);
 			$tagSet		=	'';
 			$related	=	false;
-			
+
 			//If there are tags.
 			if ($tags) {
 				//For each tag.
@@ -900,7 +910,7 @@
 					//Increment the set of tags.
 					$tagSet	.=	$tag -> slug . ',';
 				}
-				
+
 				//Get related posts.
 				$related	=	get_posts(array(
 						'tag' => $tagSet,
@@ -908,10 +918,10 @@
 						'post__not_in' => array($post -> ID)
 						));
 			}
-			
+
 			//Start output buffer.
 			ob_start();
-			
+
 			//If there are related posts.
 			if ($related) {
 				?>
@@ -929,22 +939,22 @@
 					</menu>
 				<?php
 			} else {
-				?><p id="no-related-posts"><?php _e('No related posts found.', 'bonestheme'); ?></p><?php 
+				?><p id="no-related-posts"><?php _e('No related posts found.', 'bonestheme'); ?></p><?php
 			}
-			
+
 			//Reset the query.
 			wp_reset_query();
-			
+
 			//Print the html.
 			print(ob_get_clean());
 		}
 	}
-	
+
 	//If the function exists.
 	if (!function_exists('_frozen_rss_version')) {
 		/**
-		 * Override for WordPress RSS version. 
-		 * 
+		 * Override for WordPress RSS version.
+		 *
 		 * @return string
 		 */
 		function	_frozen_rss_version() {
@@ -952,10 +962,10 @@
 			return '';
 		}
 	}
-	
+
 	//Add the filter for the admin footer.
 	add_filter('admin_footer_text', '_frozen_admin_footer');
-	
+
 	//If the function exists.
 	if (!function_exists('_frozen_remove_wp_ver_css_js')) {
 		/**
@@ -967,12 +977,12 @@
 		function	_frozen_remove_wp_ver_css_js($src) {
 			//If the version is found, change the src.
 			$src	=	(strpos($src, 'ver=')) ? remove_query_arg('ver', $src) : $src;
-		
+
 			//Return the src.
 			return $src;
 		}
 	}
-	
+
 	//If the function exists.
 	if (!function_exists('_frozen_search_form')) {
 		/**
@@ -983,7 +993,7 @@
 		function	_frozen_search_form($form = '') {
 			//Start the output buffer.
 			ob_start();
-		
+
 			?>
 				<form role="search" method="get" action="<?php print(home_url('/')); ?>" class="search">
 					<label for="s"><?php _e('Search', 'bonestheme'); ?>:</label>
@@ -991,15 +1001,15 @@
 					<input type="submit" value="<?php _e('Search'); ?>" />
 				</form>
 			<?php
-		
+
 			//Get the output buffer.
 			$form	=	ob_get_clean();
-		
+
 			//Return the form.
 			return $form;
 		}
 	}
-	
+
 	//If the function exists.
 	if (!function_exists('_frozen_theme_support')) {
 		/**
@@ -1008,29 +1018,29 @@
 		function	_frozen_theme_support() {
 			//Add post thumbnail support.
 			add_theme_support('post-thumbnails');
-		
-			//Set the default thumbnail size. 
+
+			//Set the default thumbnail size.
 			set_post_thumbnail_size(125, 125, true);
-		
+
 			//@bransonwerner custom background.
 			add_theme_support('custom-background', array(
 					'default-image' => '',
-					'default-color' => '', 
-					'wp-head-callback' => '_custom_background_cb', 
-					'admin-head-callback' => '', 
+					'default-color' => '',
+					'wp-head-callback' => '_custom_background_cb',
+					'admin-head-callback' => '',
 					'admin-preview-callback' => ''
 					));
-		
+
 			//Add automatic RSS feed support.
 			add_theme_support('automatic-feed-links');
-		
+
 			//Add custom menu support.
 			add_theme_support('menus');
-			
+
 			//Add HTML5 theme support.
 			add_theme_support('html5', array('comment-list', 'comment-form', 'search-form', 'gallery', 'caption'));
-		
-			//Register navigation menues. 
+
+			//Register navigation menues.
 			register_nav_menus(array(
 					'sub-nav' => __('Header Navigation', 'bonestheme'),
 					'main-nav' => __('Main Navigation', 'bonestheme'),
@@ -1038,12 +1048,12 @@
 					));
 		}
 	}
-	
+
 	//If the function exists.
 	if (!function_exists('_frozen_wasteland')) {
 		/**
 		 * Returns nothing.
-		 * 
+		 *
 		 * @return void
 		 */
 		function	_frozen_wasteland() {
@@ -1051,12 +1061,12 @@
 			return;
 		}
 	}
-	
+
 	//If the function exists.
 	if (!function_exists('_frozen_wpsearch')) {
 		/**
 		 * Custom WordPress search.
-		 * 
+		 *
 		 * @param string $form
 		 * @return string
 		 */
@@ -1065,7 +1075,7 @@
 			return _frozen_search_form($form);
 		}
 	}
-	
+
 	//If the function exists.
 	if (!function_exists('FrozenBones')) {
 		/**
@@ -1076,13 +1086,13 @@
 			_frozen();
 		}
 	}
-	
-	//Add thumbnail sizes. 
+
+	//Add thumbnail sizes.
 	add_image_size('frozen-thumb-400', 400, 655353, true);
 	add_image_size('frozen-thumb-280', 280, 655353, true);
 	add_image_size('frozen-thumb-185', 185, 655353, true);
 	add_image_size('frozen-thumb-125', 125, 125, true);
-	
+
 	//If the function exists.
 	if (!function_exists('headerNavigation')) {
 		/**
@@ -1111,7 +1121,7 @@
 					));
 		}
 	}
-	
+
 	//If the function exists.
 	if (!function_exists('footerNavigation')) {
 		/**
@@ -1135,14 +1145,14 @@
 					));
 		}
 	}
-	
+
 	//If the function exists.
 	if (!function_exists('mainNavigation')) {
 		/**
 		 * Main navigation.
 		 */
 		function	mainNavigation() {
-			//Output navigation. 
+			//Output navigation.
 			wp_nav_menu(array(
 					'container' => false,
 					'container_class' => false,
@@ -1159,7 +1169,7 @@
 					));
 		}
 	}
-	
+
 	//Add shortcodes to text widgets.
 	add_filter('widget_text', 'do_shortcode');
 ?>
