@@ -7,16 +7,9 @@
 	 *
 	 * @author PxO Ink (http://pxoink.net)
 	 * @uses Eddie Machado's bones
+	 * @uses _s
 	 * @package bones
 	 */
-
-	//Declare definitions.
-	if (!defined('HEADER_IMAGE'))			define('HEADER_IMAGE',
-			get_template_directory_uri() . '/images/header.gif');
-	if (!defined('HEADER_IMAGE_WIDTH'))		define('HEADER_IMAGE_WIDTH', 1000);
-	if (!defined('HEADER_IMAGE_HEIGHT'))	define('HEADER_IMAGE_HEIGHT', 150);
-	if (!defined('HEADER_TEXTCOLOR'))		define('HEADER_TEXTCOLOR', '000000');
-	if (!defined('NO_HEADER_TEXT'))			define('NO_HEADER_TEXT', true);
 
 	//Declare requirements.
 	require_once(dirname(__FILE__) . '/lib/translation/translation.php');
@@ -547,7 +540,7 @@
 				<style type="text/css">
 					header[role=banner] {
 						background-image: url('<?php header_image(); ?>');
-						}
+					}
 				</style>
 			<?php
 		}
@@ -568,9 +561,6 @@
 			<?php
 		}
 	}
-
-	//Add custom image header support.
-	add_theme_support('custom_header', array('wp-head-callback' => '_frozen_header_style', 'admin-head-callback' => '_frozen_header_style_admin'));
 
 	//If the function exists.
 	if (!function_exists('_frozen_login_css')) {
@@ -1016,20 +1006,29 @@
 		 * Add various theme support functions.
 		 */
 		function	_frozen_theme_support() {
+			//Add theme support for title tags.
+			add_theme_support('title-tag');
+
 			//Add post thumbnail support.
 			add_theme_support('post-thumbnails');
 
 			//Set the default thumbnail size.
 			set_post_thumbnail_size(125, 125, true);
 
+			//Add custom image header support.
+			add_theme_support('custom_header', array(
+				'wp-head-callback' => '_frozen_header_style',
+				'admin-head-callback' => '_frozen_header_style_admin'
+			));
+
 			//@bransonwerner custom background.
 			add_theme_support('custom-background', array(
-					'default-image' => '',
-					'default-color' => '',
-					'wp-head-callback' => '_custom_background_cb',
-					'admin-head-callback' => '',
-					'admin-preview-callback' => ''
-					));
+				'default-image' => '',
+				'default-color' => '',
+				'wp-head-callback' => '_custom_background_cb',
+				'admin-head-callback' => '',
+				'admin-preview-callback' => ''
+			));
 
 			//Add automatic RSS feed support.
 			add_theme_support('automatic-feed-links');
@@ -1040,12 +1039,22 @@
 			//Add HTML5 theme support.
 			add_theme_support('html5', array('comment-list', 'comment-form', 'search-form', 'gallery', 'caption'));
 
+			//Add support for selective refresh on widgets.
+			add_theme_support('customize-selective-refresh-widgets');
+
 			//Register navigation menues.
 			register_nav_menus(array(
-					'sub-nav' => __('Header Navigation', 'bonestheme'),
-					'main-nav' => __('Main Navigation', 'bonestheme'),
-					'footer-nav' => __('Footer Navigation', 'bonestheme')
-					));
+				'sub-nav' => __('Header Navigation', 'bonestheme'),
+				'main-nav' => __('Main Navigation', 'bonestheme'),
+				'footer-nav' => __('Footer Navigation', 'bonestheme')
+			));
+
+			/*
+			 * Jetpack
+			 */
+
+			//Add responsive video support.
+			add_theme_support('jetpack-responsive-videos');
 		}
 	}
 
