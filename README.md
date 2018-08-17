@@ -13,7 +13,7 @@ FrozenBones is currently being supported as of August 2018.
 
 ### Show Support
 
-Click [here](https://www.gittip.com/mookman288/) to support FrozenBones through Gittip.
+Click [here](https://www.patreon.com/pxoink) to support FrozenBones through Patreon.
 
 Alternatively, tip with Dogecoin: DQzKPVSresVGB6onRo7XCFAehGg1SfggxR
 
