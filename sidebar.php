@@ -1,8 +1,8 @@
 				<aside role="complementary">
-					<?php if (is_active_sidebar('sidebar_default')): ?>
+					<?php if (is_active_sidebar('sidebar_default')) { ?>
 						<?php dynamic_sidebar('sidebar_default'); ?>
-					<?php else : ?>
-						<h4>Pages: </h4>
+					<?php } else { ?>
+						<h2><?php _e('Pages', 'bonestheme'); ?></h2>
 						<?php _frozen_navigation(); ?>
-					<?php endif; ?>
+					<?php } ?>
 				</aside>

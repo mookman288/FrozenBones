@@ -342,7 +342,7 @@
 				<li <?php comment_class(); ?>>
 					<article id="comment-<?php comment_ID(); ?>">
 						<header>
-							<?php get_avatar($comment, 40); ?>
+							<?php get_avatar($comment, 125); ?>
 							<cite class="card">
 								<?php printf('Posted <time class="updated" datetime="%1$s" pubdate>%2$s</time> by <span class="author">%3$s</span>.',
 								comment_time('Y-m-j'),
@@ -358,12 +358,12 @@
 						</section>
 						<footer>
 							<?php printf(__('<a href="%s" target="_blank">Permalink</a>%s %s'),
-							htmlspecialchars(get_comment_link($comment -> comment_ID)),
-							edit_comment_link(__('Edit', 'bonestheme'), ' ', ''),
-							comment_reply_link(array_merge($args, array('reply_text' => 'Reply',
-							'login_text' => 'Login',
-							'depth' => $depth,
-							'max_depth' => $args['max_depth'])))); ?>
+								htmlspecialchars(get_comment_link($comment -> comment_ID)),
+								edit_comment_link(__('Edit', 'bonestheme'), ' ', ''),
+								comment_reply_link(array_merge($args, array('reply_text' => 'Reply',
+								'login_text' => 'Login',
+								'depth' => $depth,
+								'max_depth' => $args['max_depth'])))); ?>
 						</footer>
 					</article>
 				</li>
@@ -629,7 +629,11 @@
 
 			?>
 							<header>
+			<?php if (is_front_page() && is_home() && get_option('show_on_front') == 'posts') { ?>
+								<h2><?php _e($header, 'bonestheme'); ?></h2>
+			<?php } else { ?>
 								<h1><?php _e($header, 'bonestheme'); ?></h1>
+			<?php } ?>
 							</header>
 							<section class="content">
 								<p><?php _e('Please try the following: ', 'bonestheme'); ?></p>
@@ -637,7 +641,7 @@
 									<li>
 										<?php _e('Double check the address or search terms for syntax errors.', 'bonestheme'); ?>
 									</li>
-									<li><?php _e('Ensure that your cache is refreshed.', 'bonestheme'); ?></li>
+									<li><?php _e('Clear your cache and cookies.', 'bonestheme'); ?></li>
 									<li><?php _e('Use the search form below or adjust your search:', 'bonestheme'); ?></li>
 								</ul>
 								<?php get_search_form(); ?>
@@ -690,7 +694,7 @@
 			if (is_array($links) && count($links) > 0) {
 				?>
 					<div class="pagination">
-						<ul class="pagination">
+						<ul>
 						<?php
 							foreach($links as $link) {
 								?>
@@ -915,18 +919,24 @@
 			//If there are related posts.
 			if ($related) {
 				?>
-					<menu id="related-posts">
+					<nav id="related-posts">
+						<ul>
 				<?php
 					//For each related post.
 					foreach($related as $post) {
 						//Setup post data.
 						setup_postdata($post);
 						?>
-							<li><a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></li>
+							<li>
+								<a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>">
+									<?php the_title(); ?>
+								</a>
+							</li>
 						<?php
 					}
 				?>
-					</menu>
+						</ul>
+					</nav>
 				<?php
 			} else {
 				?><p id="no-related-posts"><?php _e('No related posts found.', 'bonestheme'); ?></p><?php
@@ -987,7 +997,8 @@
 			?>
 				<form role="search" method="get" action="<?php print(home_url('/')); ?>" class="search">
 					<label for="s"><?php _e('Search', 'bonestheme'); ?>:</label>
-					<input id="s" type="text" name="s" value="<?php print(get_search_query()); ?>" placeholder="<?php _e("this site"); ?>&hellip;" />
+					<input id="s" type="text" name="s" value="<?php print(get_search_query()); ?>"
+						placeholder="<?php _e("this site"); ?>&hellip;" />
 					<input type="submit" value="<?php _e('Search'); ?>" />
 				</form>
 			<?php
@@ -1021,13 +1032,20 @@
 				'admin-head-callback' => '_frozen_header_style_admin'
 			));
 
-			//@bransonwerner custom background.
+			//Add @bransonwerner custom background support.
 			add_theme_support('custom-background', array(
 				'default-image' => '',
 				'default-color' => '',
 				'wp-head-callback' => '_custom_background_cb',
 				'admin-head-callback' => '',
 				'admin-preview-callback' => ''
+			));
+
+			//Add custom support for a logo.
+			add_theme_support('custom-logo', array(
+				'width'       => 500,
+				'height'      => 125,
+				'flex-width'  => true
 			));
 
 			//Add automatic RSS feed support.
@@ -1097,9 +1115,9 @@
 	}
 
 	//Add thumbnail sizes.
+	add_image_size('frozen-thumb-800', 800, 655353, true);
 	add_image_size('frozen-thumb-400', 400, 655353, true);
-	add_image_size('frozen-thumb-280', 280, 655353, true);
-	add_image_size('frozen-thumb-185', 185, 655353, true);
+	add_image_size('frozen-thumb-200', 200, 655353, true);
 	add_image_size('frozen-thumb-125', 125, 125, true);
 
 	//If the function exists.
@@ -1121,7 +1139,7 @@
 					'link_after' => '',
 					'items_wrap' => '<nav id="%1$s">
 										<ul id="%2$s" class="cfx">
-											<li class="nod mobile"><a href="javascript:void(0)">&equiv;&equiv;</a></li>
+											<li class="nod mobile"><a href="#">&equiv;</a></li>
 											%3$s
 										</ul>
 									</nav>',
