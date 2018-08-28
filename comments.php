@@ -33,7 +33,7 @@
 			<p class="alert warning">
 				<?php _e('This post is password protected. You must enter a password to view comments.', 'bonestheme'); ?>
 			</p>
-		<?php return;
+		<?php
 	}
 ?>
 <section class="comments">

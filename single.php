@@ -18,6 +18,7 @@
 				</header>
 			<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 				<?php get_template_part('templates/post/content', 'page'); ?>
+				<?php comments_template(); ?>
 			<?php endwhile; else : ?>
 				<section id="page-not-found">
 					<?php _frozen_not_found(); ?>
